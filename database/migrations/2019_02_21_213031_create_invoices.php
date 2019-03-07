@@ -15,27 +15,32 @@ class CreateInvoices extends Migration
     {
 
         Schema::create('invoices', function (Blueprint $table) {
+
             $table->increments('id');
-            $table->integer('tax')->default(0)->description('in RON');
-            $table->integer('total')->default(0)->description('in RON');
-            $table->char('reference', 17);
-            $table->char('status', 16)->nullable();
-            $table->text('receiver_info')->nullable();
-            $table->text('sender_info')->nullable();
-            $table->text('payment_info')->nullable();
-            $table->text('note')->nullable();
+            $table->string('invoiceNo')->unique();
+            $table->date('invoiceDate')->nullable();
+            $table->date('dueDate')->nullable();
+            $table->enum('status',['unpaid','paid','cancelled'])->default('unpaid');
+            $table->string('title');
+            $table->string('client');
+            $table->string('clientAddress');
+            $table->decimal('subTotal',10,2)->default(0);
+            $table->decimal('discount')->default(0);
+            $table->decimal('total',10,2)->default(0);
+            $table->text('termsAndConditions')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('invoice_lines', function (Blueprint $table) {
+        Schema::create('invoice_items', function (Blueprint $table) {
+
             $table->increments('id');
-            $table->integer('amount')->default(0)->description('in RON, including tax');
-            $table->integer('tax')->default(0)->description('in RON');
-            $table->float('tax_percentage')->default(0);
-            $table->integer('invoice_id')->unsigned();
-            $table->foreign('invoice_id')->references('id')->on('invoices');
-            $table->char('description', 255);
+            $table->unsignedInteger('invoiceId');
+            $table->foreign('invoiceId')->references('id')->on('invoices');
+            $table->char('item', 255);
+            $table->integer('qty');
+            $table->decimal('unitPrice',10,2)->default(0);
             $table->timestamps();
+
         });
 
 
@@ -48,8 +53,11 @@ class CreateInvoices extends Migration
      */
     public function down()
     {
+
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('invoices');
-        Schema::dropIfExists('invoice_lines');
+        Schema::dropIfExists('invoice_items');
+        Schema::enableForeignKeyConstraints();
 
     }
 }

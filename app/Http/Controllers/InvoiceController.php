@@ -3,10 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Invoice;
+use App\InvoiceItems;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,9 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        dd('Hello');
+        $invoices = Invoice::all();
+        //return view('invoices.index', ['invoices'=>$invoices]);
+        return view('invoices.index', compact('invoices'));
     }
 
     /**
@@ -24,7 +38,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        return view('invoices.create');
     }
 
     /**
@@ -35,7 +49,39 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // required - used in the server side validation
+        $attributes = $request->validate([
+            'invoiceNo'=>['required'],
+            'invoiceDate'=>['required'],
+            'dueDate'=>['required'],
+            'title'=>'nullable|max:100',
+            'client'=>'required|max:100',
+            'clientAddress'=>'required|max:100',
+            'subtotal'=>['required'],
+            'discount'=>'required|numeric|min:0',
+            'total'=>['required']
+            ]);
+
+            // insert the invoice data
+            //$invoice = Invoice::create($attributes);
+            $invoice = new Invoice;
+
+
+            $attributesItems = $request->validate([
+                'item'=>['required'],
+                'qty'=>'required|integer|min:1',
+                'unitPrice'=>'required|numeric|min:0'
+            ]);
+
+            $invoice->subTotal = $attributesItems['qty'] * $attributesItems['unitPrice'];
+
+            // add the id to the attributes passed to invoice_items model:create method
+            $attributesItems['invoiceId'] = $invoice->id;
+            //dd($attributesItems);
+            //InvoiceItems::create($attributesItems);
+
+            //$invoice->invoiceItems()->saveMany([new InvoiceItems($attributesItems)]);
+            return redirect('/invoices');
     }
 
     /**
@@ -46,7 +92,7 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        //
+        return view('invoices.show',compact('invoice'));
     }
 
     /**
