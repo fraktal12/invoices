@@ -47,7 +47,9 @@
                         <td>
                             {{$invoice->total}}
                         </td>
-                        <td><a href="{{route('invoices.show',[$invoice->id])}}">View Invoice</a></td>
+                        <td>
+                            <a href="{{route('invoices.show',[$invoice->id])}}">View Invoice</a>
+                        </td>
 
                     </tr>
                 @endforeach

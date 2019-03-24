@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Invoice;
 use App\InvoiceItems;
-use Illuminate\Http\Request;
+
 
 class InvoiceController extends Controller
 {
@@ -51,36 +51,61 @@ class InvoiceController extends Controller
     {
         // required - used in the server side validation
         $attributes = $request->validate([
-            'invoiceNo'=>['required'],
-            'invoiceDate'=>['required'],
-            'dueDate'=>['required'],
+            'invoiceNo'=>'required',
+            'invoiceDate'=>'required',
+            'dueDate'=>'required',
             'title'=>'nullable|max:100',
             'client'=>'required|max:100',
             'clientAddress'=>'required|max:100',
-            'subtotal'=>['required'],
+            'subtotal'=>'required',
             'discount'=>'required|numeric|min:0',
-            'total'=>['required']
+            'total'=>'required'
             ]);
 
             // insert the invoice data
-            //$invoice = Invoice::create($attributes);
-            $invoice = new Invoice;
 
+            $invoice = Invoice::create($attributes);
 
             $attributesItems = $request->validate([
-                'item'=>['required'],
+                /* 'item'=>'required',
                 'qty'=>'required|integer|min:1',
-                'unitPrice'=>'required|numeric|min:0'
+                'unitPrice'=>'required|numeric|min:0' */
+
+                "item"      => "required|array|min:1",
+                "item.*"    => "required|string|min:3",
+                "qty"       => "required|array|min:1",
+                "qty.*"     => "required|integer||min:1",
+                "unitPrice" => "required|array|min:1",
+                "unitPrice.*"  => "required|numeric|min:0"
+
             ]);
 
-            $invoice->subTotal = $attributesItems['qty'] * $attributesItems['unitPrice'];
+            //$invoice->sub_total = collect($request->items)->sum(function($item) {
+            //    return $item['qty'] * $item['unitPrice'];
+            //});
+
+            //dd($invoice->sub_total);
+
+            //$invoice->subTotal = $attributesItems['qty'] * $attributesItems['unitPrice'];
 
             // add the id to the attributes passed to invoice_items model:create method
-            $attributesItems['invoiceId'] = $invoice->id;
-            //dd($attributesItems);
-            //InvoiceItems::create($attributesItems);
+            $attributesItems['invoice_id'] = [$invoice->id];
 
-            //$invoice->invoiceItems()->saveMany([new InvoiceItems($attributesItems)]);
+
+            for($i = 0; $i < count($attributesItems['item']); $i++){
+
+                $data = array(
+                    'item' => $attributesItems['item'][$i],
+                    'unitPrice' => $attributesItems['unitPrice'][$i],
+                    'qty' => (int)($attributesItems['qty'][$i]),
+                    'invoice_id' => (int)$attributesItems['invoice_id'][0]
+
+                );
+                InvoiceItems::create($data);
+                //$insertData[] = $data;
+            }
+
+            //InvoiceItems::insert($insertData);
             return redirect('/invoices');
     }
 
@@ -103,7 +128,7 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        //
+        return view('invoices.edit',compact('invoice'));
     }
 
     /**
@@ -126,6 +151,10 @@ class InvoiceController extends Controller
      */
     public function destroy(Invoice $invoice)
     {
-        //
+
+        $invoice->invoiceItems()->delete();
+        $invoice->delete();
+
+        return redirect('/invoices');
     }
 }

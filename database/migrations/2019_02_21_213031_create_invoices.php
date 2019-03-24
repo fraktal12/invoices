@@ -34,8 +34,8 @@ class CreateInvoices extends Migration
         Schema::create('invoice_items', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->unsignedInteger('invoiceId');
-            $table->foreign('invoiceId')->references('id')->on('invoices');
+            $table->unsignedInteger('invoice_id');
+            $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->char('item', 255);
             $table->integer('qty');
             $table->decimal('unitPrice',10,2)->default(0);

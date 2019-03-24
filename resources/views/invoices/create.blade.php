@@ -17,8 +17,8 @@
             </div>
         </div>
         <form action="/invoices" method="POST">
-            {{ csrf_field() }}
-
+            @csrf
+            
             <div class="columns">
                 <div class="column">
                     <div class="field">
@@ -85,47 +85,87 @@
             </div>
 
             <div class="columns itemsRow is-vcentered">
-                    <div class="column">
-                        <div class="field">
-                            <label class="label">Item description</label>
-                            <div class="control">
-                                <input class="input is-small" type="text" value = "{{old('item')}}" name = "item" placeholder="Item description" required>
-                            </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Item description</label>
+                        <div class="control">
+                            <input class="input is-small" type="text" value = "{{old('item')}}" name = "item[]" placeholder="Item description" required>
                         </div>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <label class="label">Unit price</label>
-                            <div class="control">
-                                <input class="input is-small" type="number" value = "{{old('unitPrice')}}" name = "unitPrice" placeholder="Unit price" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <label class="label">Quantity</label>
-                            <div class="control">
-                                <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty" placeholder="Quantity" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <label class="label">Total</label>
-                            <div class="control">
-                                <input class="input is-small" type="number" value = {{'unit_price*qty name'}} name = "total" placeholder={{'unit_price*qty name'}} disabled>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column is-1">
-                        <a class="button is-danger is-outlined is-small">
-                            <span class="icon is-small">
-                                <i class="fas fa-times"></i>
-                            </span>
-                        </a>
                     </div>
                 </div>
-
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Unit price</label>
+                        <div class="control">
+                            <input class="input is-small" type="number" value = "{{old('unitPrice')}}" name = "unitPrice[]" placeholder="Unit price" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Quantity</label>
+                        <div class="control">
+                            <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty[]" placeholder="Quantity" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Total</label>
+                        <div class="control">
+                            <input class="input is-small" type="number" value = {{'unit_price*qty name'}} name = "total[]" placeholder={{'unit_price*qty name'}} disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-1">
+                    <a class="button is-danger is-outlined is-small">
+                        <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="columns itemsRow is-vcentered">
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Item description</label>
+                        <div class="control">
+                            <input class="input is-small" type="text" value = "{{old('item')}}" name = "item[]" placeholder="Item description" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Unit price</label>
+                        <div class="control">
+                            <input class="input is-small" type="number" value = "{{old('unitPrice')}}" name = "unitPrice[]" placeholder="Unit price" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Quantity</label>
+                        <div class="control">
+                            <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty[]" placeholder="Quantity" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
+                        <label class="label">Total</label>
+                        <div class="control">
+                            <input class="input is-small" type="number" value = {{'unit_price*qty name'}} name = "total[]" placeholder={{'unit_price*qty name'}} disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-1">
+                    <a class="button is-danger is-outlined is-small">
+                        <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
 
 
             <div class="columns">
