@@ -6,7 +6,7 @@
         <div class="columns">
             <div class="column">
                 <h3 class="title">
-                        Editare factura
+                    Editare factura
                 </h3>
             </div>
             <div class="column">
@@ -16,9 +16,9 @@
                 </div>
             </div>
         </div>
-        <form action="/invoices" method="POST">
+        <form  method="POST" action="/invoices/{{$invoice->id}}">
             @csrf
-            {{method_field('PATCH')}}
+            @method('PATCH')
             <div class="columns">
                 <div class="column">
                     <div class="field">
@@ -127,13 +127,12 @@
                     </div>
                 </div>
             @endfor
-
             <div class="columns">
                 <div class="column is-2">
                     <!-- left side -->
                     <div class="field is-pulled-left">
                         <p class="control">
-                            <a class="button is-primary is-outlined is-small" style="text-decoration: none">Add row</a>
+                            <a id = "addRow" class="button is-primary is-outlined is-small" style="text-decoration: none">Add row</a>
                         </p>
                     </div>
                 </div>
@@ -199,7 +198,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-link">Save</button>
@@ -210,6 +208,73 @@
             </div>
             @include ('invoices.errors')
         </form>
-
     </div>
 @endsection
+
+@section('script')
+    <script>
+        $( document ).ready(function() {
+
+            $(document).on('click', '#addRow', function () {
+
+                let row = '';
+
+                row += '\
+                <div class="columns itemsRow is-vcentered">\
+                    <div class="column">\
+                        <div class="field">\
+                            <label class="label">Item description</label>\
+                            <div class="control">\
+                                <input class="input is-small" type="text" value = "" name = "item[]" placeholder="Item description" required>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="column">\
+                        <div class="field">\
+                            <label class="label">Unit price</label>\
+                            <div class="control">\
+                                <input class="input is-small" type="number" value = "" name = "unitPrice[]" placeholder="Unit price" required>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="column">\
+                        <div class="field">\
+                            <label class="label">Quantity</label>\
+                            <div class="control">\
+                                <input class="input is-small" type="number" value = "1" name = "qty[]" placeholder="Quantity" required>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="column">\
+                        <div class="field">\
+                            <label class="label">Total</label>\
+                            <div class="control">\
+                                <input class="input is-small" type="number" value = "" name = "total[]" placeholder={{'unit_price*qty name'}} disabled>\
+                            </div>\
+                        </div>\
+                    </div>\
+                    <div class="column is-1">\
+                        <a class="button is-danger is-outlined is-small">\
+                            <span class="icon is-small">\
+                                <i class="fas fa-times"></i>\
+                            </span>\
+                        </a>\
+                    </div>\
+                 </div>\
+                ';
+
+                // paste after last invoice item
+                $(".itemsRow:last").after(row);
+
+                row = '';
+                console.log(row);
+
+            });
+
+            $(document).on('click', '.is-danger:not([disabled])', function () {
+                $(this).closest(".itemsRow").remove();
+            });
+        });
+
+    </script>
+@stop

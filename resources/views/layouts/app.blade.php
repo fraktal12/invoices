@@ -10,10 +10,6 @@
 
     <title>{{ config('app.name', 'Invoices') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css" rel="stylesheet" type="text/css">
@@ -78,5 +74,10 @@
             @yield('content')
         </main>
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    {{-- add local blade jscripts --}}
+    @yield('script')
 </body>
 </html>

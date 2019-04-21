@@ -49,6 +49,35 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+
+        $attributesItems = $request->validate([
+            "item"      => "required|array|min:1",
+            "item.*"    => "required|string|min:3",
+            "unitPrice" => "required|array|min:1",
+            "unitPrice.*"  => "required|numeric|min:0",
+            "qty"       => "required|array|min:1",
+            "qty.*"     => "required|integer||min:1"
+        ]);
+
+        // add the id to the attributes passed to invoice_items model:create method
+        $insertItemsData = collect();
+        // subtotal for the invoice
+        $subTotal = 0;
+
+
+        for($i = 0; $i < count($attributesItems['item']); $i++){
+
+            $data = array(
+                'item' => $attributesItems['item'][$i],
+                'unitPrice' => $attributesItems['unitPrice'][$i],
+                'qty' => (int)($attributesItems['qty'][$i])
+            );
+            // idd items to the collection
+            $insertItemsData->push(new InvoiceItems ($data));
+
+            $subTotal += $attributesItems['unitPrice'][$i] * $attributesItems['qty'][$i];
+        }
+
         // required - used in the server side validation
         $attributes = $request->validate([
             'invoiceNo'=>'required',
@@ -57,56 +86,24 @@ class InvoiceController extends Controller
             'title'=>'nullable|max:100',
             'client'=>'required|max:100',
             'clientAddress'=>'required|max:100',
-            'subtotal'=>'required',
+            'subTotal'=>'required',
             'discount'=>'required|numeric|min:0',
             'total'=>'required'
             ]);
 
-            // insert the invoice data
+        $attributes['subTotal'] = $subTotal;
 
-            $invoice = Invoice::create($attributes);
+        // insert the invoice data
+        $invoice = Invoice::create($attributes);
 
-            $attributesItems = $request->validate([
-                /* 'item'=>'required',
-                'qty'=>'required|integer|min:1',
-                'unitPrice'=>'required|numeric|min:0' */
+        // add invoice ID to the invoice items collection
+        foreach($insertItemsData as $data){
+            $data['invoice_id'] = $invoice->id;
+            //insert invoice items updated with invoice ID; make the collection element an array
+            InvoiceItems::create($data->toArray());
+        }
 
-                "item"      => "required|array|min:1",
-                "item.*"    => "required|string|min:3",
-                "qty"       => "required|array|min:1",
-                "qty.*"     => "required|integer||min:1",
-                "unitPrice" => "required|array|min:1",
-                "unitPrice.*"  => "required|numeric|min:0"
-
-            ]);
-
-            //$invoice->sub_total = collect($request->items)->sum(function($item) {
-            //    return $item['qty'] * $item['unitPrice'];
-            //});
-
-            //dd($invoice->sub_total);
-
-            //$invoice->subTotal = $attributesItems['qty'] * $attributesItems['unitPrice'];
-
-            // add the id to the attributes passed to invoice_items model:create method
-            $attributesItems['invoice_id'] = [$invoice->id];
-
-
-            for($i = 0; $i < count($attributesItems['item']); $i++){
-
-                $data = array(
-                    'item' => $attributesItems['item'][$i],
-                    'unitPrice' => $attributesItems['unitPrice'][$i],
-                    'qty' => (int)($attributesItems['qty'][$i]),
-                    'invoice_id' => (int)$attributesItems['invoice_id'][0]
-
-                );
-                InvoiceItems::create($data);
-                //$insertData[] = $data;
-            }
-
-            //InvoiceItems::insert($insertData);
-            return redirect('/invoices');
+        return redirect('/invoices');
     }
 
     /**
@@ -140,7 +137,62 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        //
+        //dd($request->all());
+        $invoice->invoiceItems()->delete();
+
+        $attributesItems = $request->validate([
+            "item"      => "required|array|min:1",
+            "item.*"    => "required|string|min:3",
+            "unitPrice" => "required|array|min:1",
+            "unitPrice.*"  => "required|numeric|min:0",
+            "qty"       => "required|array|min:1",
+            "qty.*"     => "required|integer||min:1"
+        ]);
+
+        // add the id to the attributes passed to invoice_items model:create method
+        $insertItemsData = collect();
+        // subtotal for the invoice
+        $subTotal = 0;
+
+        for($i = 0; $i < count($attributesItems['item']); $i++){
+
+            $data = array(
+                'item' => $attributesItems['item'][$i],
+                'unitPrice' => $attributesItems['unitPrice'][$i],
+                'qty' => (int)($attributesItems['qty'][$i]),
+                'invoice_id' => $invoice->id
+            );
+            // idd items to the collection
+            $insertItemsData->push(new InvoiceItems ($data));
+
+            $subTotal += $attributesItems['unitPrice'][$i] * $attributesItems['qty'][$i];
+        }
+
+        // required - used in the server side validation
+        $attributes = $request->validate([
+            'invoiceNo'=>'required',
+            'invoiceDate'=>'required',
+            'dueDate'=>'required',
+            'title'=>'nullable|max:100',
+            'client'=>'required|max:100',
+            'clientAddress'=>'required|max:100',
+            'subTotal'=>'required',
+            'discount'=>'required|numeric|min:0',
+            'total'=>'required'
+            ]);
+
+        $attributes['subTotal'] = $subTotal;
+        //dd($insertItemsData->toArray());
+        // update the invoice data
+        Invoice::whereId($invoice->id)->update($attributes);
+
+        // add invoice ID to the invoice items collection
+        foreach($insertItemsData as $data){
+            //insert invoice items updated with invoice ID; make the collection element an array
+            InvoiceItems::create($data->toArray());
+        }
+
+        return redirect('/invoices');
     }
 
     /**
