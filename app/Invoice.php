@@ -13,7 +13,6 @@ class Invoice extends Model
      */
     public function invoiceItems()
     {
-
         return $this->hasMany(InvoiceItems::class);
     }
 }

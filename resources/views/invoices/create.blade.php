@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container">
         <div class="columns">
             <div class="column">
@@ -72,8 +71,8 @@
                 <div class="column">
                     <div class="field">
                         <label class="label">Status</label>
-                        <div class="select is-small" name = "status" required>
-                            <select>
+                        <div class="select is-small"  required>
+                            <select name = "status" id="status">
                                 <option value = "unpaid" selected>Unpaid</option>
                                 <option value = "paid">Paid</option>
                                 <option value = "cancelled">Cancelled</option>
@@ -82,7 +81,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="columns itemsRow is-vcentered">
                 <div class="column">
                     <div class="field">
@@ -96,7 +94,7 @@
                     <div class="field">
                         <label class="label">Unit price</label>
                         <div class="control">
-                            <input class="input is-small" type="number" value = "{{old('unitPrice')}}" name = "unitPrice[]" placeholder="Unit price" required>
+                            <input class="input is-small" type="number" value = "{{old('unitPrice')}}" name = "unitPrice[]" placeholder="Unit price" min="0" required>
                         </div>
                     </div>
                 </div>
@@ -104,7 +102,7 @@
                     <div class="field">
                         <label class="label">Quantity</label>
                         <div class="control">
-                            <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty[]" placeholder="Quantity" required>
+                            <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty[]" placeholder="Quantity" min="1" required>
                         </div>
                     </div>
                 </div>
@@ -112,19 +110,18 @@
                     <div class="field">
                         <label class="label">Total</label>
                         <div class="control">
-                            <input class="input is-small" type="number" value = {{'unit_price*qty name'}} name = "total[]" placeholder={{'unit_price*qty name'}} disabled>
+                            <input class="input is-small" type="number" value = "" name = "total[]" placeholder="" readonly >
                         </div>
                     </div>
                 </div>
                 <div class="column is-1">
-                    <a class="button is-danger is-outlined is-small" disabled>
+                    <a class="button is-danger is-outlined is-small"  disabled>
                         <span class="icon is-small">
                             <i class="fas fa-times"></i>
                         </span>
                     </a>
                 </div>
             </div>
-
             <div class="columns">
                 <div class="column is-2">
                     <!-- left side -->
@@ -142,7 +139,7 @@
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" name = "subTotal" placeholder="Subtotal" required>
+                                    <input class="input is-small" type="number" name = "subTotal" placeholder="Subtotal" readonly>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +155,7 @@
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" name = "discount" placeholder="Discount" required>
+                                    <input class="input is-small" type="number" value = "0" name = "discount" placeholder="Discount" required>
                                 </div>
                             </div>
                         </div>
@@ -188,7 +185,7 @@
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <input class="input is-small" type="number" name = "total" placeholder="Total" required>
+                                    <input class="input is-small" type="number" name = "grandTotal" placeholder="Total" readonly>
                                 </div>
                             </div>
                         </div>
@@ -201,7 +198,7 @@
                     <button class="button is-link">Save</button>
                 </div>
                 <div class="control">
-                    <button class="button is-text">Cancel</button>
+                    <a class="button" href="{{url()->previous()}}" style="text-decoration: none">Cancel</a>
                 </div>
             </div>
             @include ('invoices.errors')
@@ -213,12 +210,67 @@
     <script>
         $( document ).ready(function() {
 
+            function updatePrice() {
+
+                let total;
+                let price;
+                let qty;
+                if (this.name === 'unitPrice[]'){
+                    price = $( this ).val();
+                }
+                else{
+                    price = $( this ).closest('.itemsRow').find('input[name="unitPrice[]"]').val();
+                }
+
+                if (this.name === 'qty[]'){
+                    qty = $( this ).val();
+                }
+                else{
+                    qty = $( this ).closest('.itemsRow').find('input[name="qty[]"]').val();
+                }
+
+                total = price* qty;
+
+                $( this ).closest('.itemsRow').find('input[name="total[]"]').val(total);
+
+                updateSubtotal();
+
+            }
+
+            function updateSubtotal() {
+
+                let subTotal = 0;
+
+
+                $( ".itemsRow" ).each(function() {
+                    let rowTotal = $( this ).find('input[name="total[]"]').val();
+                    subTotal += (+rowTotal);    // unary operator
+                });
+                $('input[name="subTotal"]').val(subTotal);
+
+                updateGrandTotal();
+
+            }
+
+            function updateGrandTotal() {
+
+                let grandTotal = 0;
+
+                let subTotal = $('input[name="subTotal"]').val();
+                let discount = $('input[name="discount"]').val();
+
+                grandTotal = (+subTotal) - (+discount)*(+subTotal)/100;
+
+                $('input[name="grandTotal"]').val(grandTotal);
+
+            }
+
             $(document).on('click', '#addRow', function () {
 
                 let row = '';
 
                 row += '\
-                <div class="columns itemsRow is-vcentered">\
+                    <div class="columns itemsRow is-vcentered">\
                     <div class="column">\
                         <div class="field">\
                             <label class="label">Item description</label>\
@@ -247,7 +299,7 @@
                         <div class="field">\
                             <label class="label">Total</label>\
                             <div class="control">\
-                                <input class="input is-small" type="number" value = "" name = "total[]" placeholder={{'unit_price*qty name'}} disabled>\
+                                <input class="input is-small" type="number" value = "" name = "total[]" placeholder={{'unit_price*qty name'}} readonly>\
                             </div>\
                         </div>\
                     </div>\
@@ -272,6 +324,9 @@
             $(document).on('click', '.is-danger:not([disabled])', function () {
                 $(this).closest(".itemsRow").remove();
             });
+
+            $(document).on("keyup mouseup", "input[name='qty[]'], input[name='unitPrice[]']", updatePrice);
+            $(document).on("keyup change mouseup", "input[name='discount']", updateGrandTotal);
         });
 
     </script>

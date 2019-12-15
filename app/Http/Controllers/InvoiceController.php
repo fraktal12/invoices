@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Invoice;
 use App\InvoiceItems;
-
+use Session;
 
 class InvoiceController extends Controller
 {
@@ -86,9 +86,10 @@ class InvoiceController extends Controller
             'title'=>'nullable|max:100',
             'client'=>'required|max:100',
             'clientAddress'=>'required|max:100',
+            'status'=>'required',
             'subTotal'=>'required',
             'discount'=>'required|numeric|min:0',
-            'total'=>'required'
+            'grandTotal'=>'required'
             ]);
 
         $attributes['subTotal'] = $subTotal;
@@ -102,8 +103,10 @@ class InvoiceController extends Controller
             //insert invoice items updated with invoice ID; make the collection element an array
             InvoiceItems::create($data->toArray());
         }
-
-        return redirect('/invoices');
+        Session::flash('message', 'Successfully created invoice!');
+        // return in the view mode
+        return redirect()->route('invoices.show', compact('invoice'));
+        //return redirect('/invoices');
     }
 
     /**
@@ -165,7 +168,7 @@ class InvoiceController extends Controller
             // idd items to the collection
             $insertItemsData->push(new InvoiceItems ($data));
 
-            $subTotal += $attributesItems['unitPrice'][$i] * $attributesItems['qty'][$i];
+            //$subTotal += $attributesItems['unitPrice'][$i] * $attributesItems['qty'][$i];
         }
 
         // required - used in the server side validation
@@ -176,12 +179,13 @@ class InvoiceController extends Controller
             'title'=>'nullable|max:100',
             'client'=>'required|max:100',
             'clientAddress'=>'required|max:100',
+            'status'=>'required',
             'subTotal'=>'required',
             'discount'=>'required|numeric|min:0',
-            'total'=>'required'
+            'grandTotal'=>'required'
             ]);
 
-        $attributes['subTotal'] = $subTotal;
+        //$attributes['subTotal'] = $subTotal;
         //dd($insertItemsData->toArray());
         // update the invoice data
         Invoice::whereId($invoice->id)->update($attributes);
@@ -192,7 +196,8 @@ class InvoiceController extends Controller
             InvoiceItems::create($data->toArray());
         }
 
-        return redirect('/invoices');
+        //return view('invoices.show', compact('invoice'));
+        return redirect()->route('invoices.show', compact('invoice'));
     }
 
     /**

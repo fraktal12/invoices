@@ -26,7 +26,7 @@ class CreateInvoices extends Migration
             $table->string('clientAddress');
             $table->decimal('subTotal',10,2)->default(0);
             $table->decimal('discount')->default(0);
-            $table->decimal('total',10,2)->default(0);
+            $table->decimal('grandTotal',10,2)->default(0);
             $table->text('termsAndConditions')->nullable();
             $table->timestamps();
         });

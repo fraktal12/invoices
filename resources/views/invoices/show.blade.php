@@ -12,10 +12,10 @@
                 <!-- Right side -->
                 <div class="field is-grouped is-pulled-right">
                     <p class="control">
-                        <a class="button is-link is-outlined" href="/invoices/{{$invoice->id}}/edit" style="text-decoration: none">Edit</a>
+                        <a href="{{route('invoices.index')}}" style="text-decoration: none" class="button is-primary is-outlined">Go to Dashboard</a>
                     </p>
                     <p class="control">
-                        <a class="button" href="{{route('invoices.index')}}" style="text-decoration: none">Back</a>
+                        <a class="button is-link is-outlined" href="/invoices/{{$invoice->id}}/edit" style="text-decoration: none">Edit</a>
                     </p>
                     <form method="POST" action="/invoices/{{$invoice->id}}">
                         @csrf
@@ -78,8 +78,8 @@
                     <tr>
                         <td>{{$invoice->invoiceItems->pluck('item')[$i]}}</td>
                         <td>{{$invoice->invoiceItems->pluck('qty')[$i]}}</td>
-                        <td>{{$invoice->invoiceItems->pluck('unitPrice')[$i]}}</td>
-                        <td class = "has-text-right">xxx</td>
+                        <td>{{$invoice->invoiceItems->pluck('unitPrice')[$i]}} RON</td>
+                        <td class = "has-text-right">{{$invoice->invoiceItems->pluck('qty')[$i] * $invoice->invoiceItems->pluck('unitPrice')[$i]}} RON</td>
                     </tr>
                 @endfor
             </tbody>
@@ -91,7 +91,7 @@
                 <div class = "level-item is-pulled-left"></div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right has-text-weight-bold">Subtotal: {{$invoice->subTotal}}</div>
+                <div class = "level-item is-pulled-right has-text-weight-bold">Subtotal: {{$invoice->subTotal}} RON</div>
             </div>
         </div>
         <div class="level">
@@ -99,7 +99,7 @@
                 <div class = "level-item is-pulled-left"></div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right has-text-weight-bold">Discount: {{$invoice->discount}}</div>
+                <div class = "level-item is-pulled-right has-text-weight-bold">Discount: {{$invoice->discount}} %</div>
             </div>
         </div>
         <div class="level">
@@ -107,7 +107,7 @@
                 <div class = "level-item is-pulled-left"></div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right has-text-weight-bold">Grand Total: {{$invoice->total}}</div>
+                <div class = "level-item is-pulled-right has-text-weight-bold">Grand Total: {{$invoice->grandTotal}} RON</div>
             </div>
         </div>
         <div class="level">

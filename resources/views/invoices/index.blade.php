@@ -45,7 +45,7 @@
                             {{$invoice->dueDate}}
                         </td>
                         <td>
-                            {{$invoice->total}}
+                            {{$invoice->grandTotal}}
                         </td>
                         <td>
                             <a href="{{route('invoices.show',[$invoice->id])}}">View Invoice</a>
