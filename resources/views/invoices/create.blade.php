@@ -5,7 +5,7 @@
         <div class="columns">
             <div class="column">
                 <h3 class="title">
-                    Factura noua
+                    Factură nouă
                 </h3>
             </div>
             <div class="column">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Invoice Number</label>
+                    <label class="label">Invoice Number (last one used: {{$maxInvoiceNo}})</label>
                         <div class="control">
                             <input class="input is-small {{$errors->has('invoiceNo') ? 'is-danger':''}}" type="text" value = "{{old('invoiceNo')}}" name = "invoiceNo" placeholder="Invoice No" required>
                         </div>
@@ -114,8 +114,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="column is-1">
-                    <a class="button is-danger is-outlined is-small"  disabled>
+                <div class="column is-1 text-center">
+                    <a class="button is-danger is-outlined is-small" disabled>
                         <span class="icon is-small">
                             <i class="fas fa-times"></i>
                         </span>
@@ -195,7 +195,8 @@
 
             <div class="field is-grouped">
                 <div class="control">
-                    <button class="button is-link">Save</button>
+                    {{-- <button class="button is-link">Save</button> --}}
+                    <input type="submit" class="button is-link" value="Save" />
                 </div>
                 <div class="control">
                     <a class="button" href="{{url()->previous()}}" style="text-decoration: none">Cancel</a>
@@ -215,6 +216,7 @@
                 let total;
                 let price;
                 let qty;
+
                 if (this.name === 'unitPrice[]'){
                     price = $( this ).val();
                 }
@@ -241,12 +243,11 @@
 
                 let subTotal = 0;
 
-
                 $( ".itemsRow" ).each(function() {
                     let rowTotal = $( this ).find('input[name="total[]"]').val();
                     subTotal += (+rowTotal);    // unary operator
+                    $('input[name="subTotal"]').val(subTotal);
                 });
-                $('input[name="subTotal"]').val(subTotal);
 
                 updateGrandTotal();
 
@@ -267,67 +268,21 @@
 
             $(document).on('click', '#addRow', function () {
 
-                let row = '';
-
-                row += '\
-                    <div class="columns itemsRow is-vcentered">\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Item description</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="text" value = "" name = "item[]" placeholder="Item description" required>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Unit price</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="number" value = "" name = "unitPrice[]" placeholder="Unit price" required>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Quantity</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="number" value = "1" name = "qty[]" placeholder="Quantity" required>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Total</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="number" value = "" name = "total[]" placeholder={{'unit_price*qty name'}} readonly>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column is-1">\
-                        <a class="button is-danger is-outlined is-small">\
-                            <span class="icon is-small">\
-                                <i class="fas fa-times"></i>\
-                            </span>\
-                        </a>\
-                    </div>\
-                 </div>\
-                ';
-
-                // paste after last invoice item
-                $(".itemsRow:last").after(row);
-
-                row = '';
-                console.log(row);
+                let clonedRow = $(".itemsRow:last").clone();
+                
+                clonedRow.find('input').val('');
+                clonedRow.find('.is-danger').removeAttr('disabled');
+                $(".itemsRow:last").after(clonedRow);
 
             });
 
             $(document).on('click', '.is-danger:not([disabled])', function () {
                 $(this).closest(".itemsRow").remove();
+                updateSubtotal();
             });
 
-            $(document).on("keyup mouseup", "input[name='qty[]'], input[name='unitPrice[]']", updatePrice);
+            $(document).on("keyup change mouseup", "input[name='qty[]'], input[name='unitPrice[]']", updatePrice);
             $(document).on("keyup change mouseup", "input[name='discount']", updateGrandTotal);
         });
-
     </script>
 @stop

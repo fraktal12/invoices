@@ -207,10 +207,12 @@
             </div>
             <div class="field is-grouped">
                 <div class="control">
-                    <button class="button is-link">Save</button>
+                    {{-- <button class="button is-link">Save</button> --}}
+                    <input type="submit" class="button is-link" value="Save" />
                 </div>
                 <div class="control">
-                    <button class="button is-text">Cancel</button>
+                    {{-- <button class="button is-text">Cancel</button> --}}
+                    <a class="button is-text" href="{{url()->previous()}}" >Cancel</a>
                 </div>
             </div>
             @include ('invoices.errors')
@@ -253,12 +255,12 @@
 
                 let subTotal = 0;
 
-
                 $( ".itemsRow" ).each(function() {
                     let rowTotal = $( this ).find('input[name="total[]"]').val();
                     subTotal += (+rowTotal);    // unary operator
+                    $('input[name="subTotal"]').val(subTotal);
                 });
-                $('input[name="subTotal"]').val(subTotal);
+                
 
                 updateGrandTotal();
 
@@ -279,62 +281,17 @@
 
             $(document).on('click', '#addRow', function () {
 
-                let row = '';
-
-                row += '\
-                    <div class="columns itemsRow is-vcentered">\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Item description</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="text" value = "" name = "item[]" placeholder="Item description" required>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Unit price</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="number" value = "" name = "unitPrice[]" placeholder="Unit price" min="0" required>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Quantity</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="number" value = "1" name = "qty[]" placeholder="Quantity" min="1" required>\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column">\
-                        <div class="field">\
-                            <label class="label">Total</label>\
-                            <div class="control">\
-                                <input class="input is-small" type="number" value = "" name = "total[]" placeholder="" readonly >\
-                            </div>\
-                        </div>\
-                    </div>\
-                    <div class="column is-1">\
-                        <a class="button is-danger is-outlined is-small">\
-                            <span class="icon is-small">\
-                                <i class="fas fa-times"></i>\
-                            </span>\
-                        </a>\
-                    </div>\
-                 </div>\
-                ';
-
-                // paste after last invoice item
-                $(".itemsRow:last").after(row);
-
-                row = '';
-                console.log(row);
+                let clonedRow = $(".itemsRow:last").clone();
+                
+                clonedRow.find('input').val('');
+                clonedRow.find('.is-danger').removeAttr('disabled');
+                $(".itemsRow:last").after(clonedRow);
 
             });
 
             $(document).on('click', '.is-danger:not([disabled])', function () {
                 $(this).closest(".itemsRow").remove();
+                updateSubtotal();
             });
 
             $(document).on("keyup mouseup", "input[name='qty[]'], input[name='unitPrice[]']", updatePrice);

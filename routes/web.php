@@ -17,7 +17,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index')->name('home');
+// only authenticated users can access the site
+Route::middleware(['auth'])->group(function () {
+    Route::resource('invoices','InvoiceController');
+    Route::get('invoices/{invoice}/pdf', 'InvoiceController@printPDF')->name('invoices.download');
+});
+
 Route::get('/home', 'InvoiceController@index')->name('invoices');
 
-Route::resource('invoices','InvoiceController');
+
+

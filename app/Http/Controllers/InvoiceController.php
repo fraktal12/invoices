@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Invoice;
 use App\InvoiceItems;
+// This is important to add here. 
 use Session;
 
 class InvoiceController extends Controller
@@ -38,7 +39,9 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        return view('invoices.create');
+        $maxInvoiceNo = Invoice::max('invoiceNo');
+
+        return view('invoices.create', compact('maxInvoiceNo'));
     }
 
     /**
@@ -64,7 +67,6 @@ class InvoiceController extends Controller
         // subtotal for the invoice
         $subTotal = 0;
 
-
         for($i = 0; $i < count($attributesItems['item']); $i++){
 
             $data = array(
@@ -72,9 +74,10 @@ class InvoiceController extends Controller
                 'unitPrice' => $attributesItems['unitPrice'][$i],
                 'qty' => (int)($attributesItems['qty'][$i])
             );
-            // idd items to the collection
+            // add items to the collection
             $insertItemsData->push(new InvoiceItems ($data));
 
+            // update the subtotal
             $subTotal += $attributesItems['unitPrice'][$i] * $attributesItems['qty'][$i];
         }
 
@@ -106,7 +109,8 @@ class InvoiceController extends Controller
         Session::flash('message', 'Successfully created invoice!');
         // return in the view mode
         return redirect()->route('invoices.show', compact('invoice'));
-        //return redirect('/invoices');
+        //return redirect()->route('invoices.index');
+
     }
 
     /**
@@ -139,8 +143,8 @@ class InvoiceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Invoice $invoice)
-    {
-        //dd($request->all());
+    {   
+        // delete previous entries of this invoice and insert the new ones
         $invoice->invoiceItems()->delete();
 
         $attributesItems = $request->validate([
@@ -165,10 +169,10 @@ class InvoiceController extends Controller
                 'qty' => (int)($attributesItems['qty'][$i]),
                 'invoice_id' => $invoice->id
             );
-            // idd items to the collection
+            // add items to the collection
             $insertItemsData->push(new InvoiceItems ($data));
 
-            //$subTotal += $attributesItems['unitPrice'][$i] * $attributesItems['qty'][$i];
+
         }
 
         // required - used in the server side validation
@@ -186,7 +190,6 @@ class InvoiceController extends Controller
             ]);
 
         //$attributes['subTotal'] = $subTotal;
-        //dd($insertItemsData->toArray());
         // update the invoice data
         Invoice::whereId($invoice->id)->update($attributes);
 
@@ -212,6 +215,18 @@ class InvoiceController extends Controller
         $invoice->invoiceItems()->delete();
         $invoice->delete();
 
-        return redirect('/invoices');
+        //return redirect('/invoices');
+        return redirect()->route('invoices.index');
+        
+    }
+
+
+    public function printPDF(Invoice $invoice)
+    {
+        //dd($invoice);
+        //$pdf = \PDF::loadView('invoices.pdf', compact('invoice'))->save('pdf/specification.pdf');
+        $pdf = \PDF::loadView('invoices.pdf', compact('invoice'));
+        return $pdf->download('invoice.pdf');
+
     }
 }
