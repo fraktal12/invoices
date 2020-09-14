@@ -1,8 +1,9 @@
 # invoices
 This is a simple Laravel project to create a invoices application.
+You can create, view, edit, delete, and save them as pdf to send them as attachments.
 I used bulma for a better looking interface and jquery for the frontend.
 
-Still need to add the pdf converting and sending the invoice via email, so, consider it work in progress... ;)
+Now I need to add roles and permissions
 
 1. Clone the repository. Run: git clone git@github.com:fraktal12/invoices.git
 2. Install Composer Dependencies. Run: $ composer install
