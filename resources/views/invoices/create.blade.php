@@ -20,25 +20,33 @@
             <div class="columns">
                 <div class="column">
                     <div class="field">
+                    <label class="label">Factura Nr</label>
+                        <div class="control">
+                            <input class="input is-small" type="text" value = {{$maxInvoiceNo+1}}  name = "invoiceNo" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
                         <label class="label">Client</label>
                         <div class="control">
                             <input class="input is-small" type="text" value = "{{old('client')}}" name = "client" placeholder="Client" required>
                         </div>
                     </div>
-                </div>
+                </div>               
                 <div class="column">
                     <div class="field">
-                    <label class="label">Invoice Number (last one used: {{$maxInvoiceNo}})</label>
+                        <label class="label">Adresa client</label>
                         <div class="control">
-                            <input class="input is-small {{$errors->has('invoiceNo') ? 'is-danger':''}}" type="text" value = "{{old('invoiceNo')}}" name = "invoiceNo" placeholder="Invoice No" required>
+                            <input class="input is-small" type="text" name = "clientAddress" value = "{{old('clientAddress')}}" placeholder="Client Address" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Client Address</label>
+                        <label class="label">CNP/CUI</label>
                         <div class="control">
-                            <input class="input is-small" type="text" name = "clientAddress" value = "{{old('clientAddress')}}" placeholder="Client Address" required>
+                            <input class="input is-small" type="text" name = "clientInfo" value = "{{old('clientInfo')}}" placeholder="Client CNP/CUI" required>
                         </div>
                     </div>
                 </div>
@@ -46,36 +54,36 @@
             <div class="columns">
                 <div class="column">
                     <div class="field">
-                        <label class="label">Reference</label>
+                        <label class="label">Referinta</label>
                         <div class="control">
-                            <input class="input is-small" type="text" value = "{{old('title')}}" name = "title" placeholder="Reference" required>
+                            <input class="input is-small" type="text" value = "{{old('title')}}" name = "title" placeholder="Referinta" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Invoice Date</label>
+                        <label class="label">Data facturii</label>
                         <div class="control">
-                            <input class="input is-small" type="date" value = "{{old('invoiceDate')}}" name = "invoiceDate" placeholder="Invoice Date" required>
+                            <input class="input is-small" type="date" value = "{{old('invoiceDate')}}" name = "invoiceDate" placeholder="Data facturii" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Due Date</label>
+                        <label class="label">Data limita de plata</label>
                         <div class="control">
-                            <input class="input is-small" type="date" value = "{{old('dueDate')}}" name = "dueDate" placeholder="Due Date" required>
+                            <input class="input is-small" type="date" value = "{{old('dueDate')}}" name = "dueDate" placeholder="Data limita de plata" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Status</label>
+                        <label class="label">Stare</label>
                         <div class="select is-small"  required>
                             <select name = "status" id="status">
-                                <option value = "unpaid" selected>Unpaid</option>
-                                <option value = "paid">Paid</option>
-                                <option value = "cancelled">Cancelled</option>
+                                <option value = "unpaid" selected>Neplatita</option>
+                                <option value = "paid">Platita</option>
+                                <option value = "cancelled">Anulata</option>
                             </select>
                         </div>
                     </div>
@@ -84,25 +92,25 @@
             <div class="columns itemsRow is-vcentered">
                 <div class="column">
                     <div class="field">
-                        <label class="label">Item description</label>
+                        <label class="label">Descriere produs/serviciu</label>
                         <div class="control">
-                            <input class="input is-small" type="text" value = "{{old('item')}}" name = "item[]" placeholder="Item description" required>
+                            <input class="input is-small" type="text" value = "{{old('item')}}" name = "item[]" placeholder="Descriere produs/serviciu" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Unit price</label>
+                        <label class="label">Pret unitar</label>
                         <div class="control">
-                            <input class="input is-small" type="number" value = "{{old('unitPrice')}}" name = "unitPrice[]" placeholder="Unit price" min="0" required>
+                            <input class="input is-small" type="number" value = "{{old('unitPrice')}}" name = "unitPrice[]" placeholder="Pret unitar" min="0" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Quantity</label>
+                        <label class="label">Cantitate</label>
                         <div class="control">
-                            <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty[]" placeholder="Quantity" min="1" required>
+                            <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty[]" placeholder="Cantitate" min="1" required>
                         </div>
                     </div>
                 </div>
@@ -127,7 +135,7 @@
                     <!-- left side -->
                     <div class="field is-pulled-left">
                         <p class="control">
-                            <a id = "addRow" class="button is-primary is-outlined is-small" style="text-decoration: none">Add row</a>
+                            <a id = "addRow" class="button is-primary is-outlined is-small" style="text-decoration: none">Rand nou</a>
                         </p>
                     </div>
                 </div>
@@ -150,7 +158,7 @@
                 <div class="column is-4 is-offset-8">
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Discount</label>
+                            <label class="label">Discount (%)</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
@@ -166,12 +174,12 @@
                 <div class="column is-4">
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Terms and Conditions</label>
+                            <label class="label">Termeni si Conditii</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <textarea class="input is-small" name = "termsAndConditions" placeholder="Terms and conditions"></textarea>
+                                    <textarea class="input is-small" name = "termsAndConditions" placeholder="Termeni si Conditii"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -196,10 +204,10 @@
             <div class="field is-grouped">
                 <div class="control">
                     {{-- <button class="button is-link">Save</button> --}}
-                    <input type="submit" class="button is-link" value="Save" />
+                    <input type="submit" class="button is-link" value="Salveaza" />
                 </div>
                 <div class="control">
-                    <a class="button" href="{{url()->previous()}}" style="text-decoration: none">Cancel</a>
+                    <a class="button" href="{{url()->previous()}}" style="text-decoration: none">Anuleaza</a>
                 </div>
             </div>
             @include ('invoices.errors')

@@ -22,25 +22,33 @@
             <div class="columns">
                 <div class="column">
                     <div class="field">
+                        <label class="label">Factura Nr</label>
+                        <div class="control">
+                            <input class="input is-small" type="text" value = "{{$invoice->invoiceNo}}" name = "invoiceNo" placeholder="Factura Nr" required readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field">
                         <label class="label">Client</label>
                         <div class="control">
                             <input class="input is-small" type="text" value = "{{$invoice->client}}" name = "client" placeholder="Client" required>
                         </div>
                     </div>
-                </div>
+                </div>             
                 <div class="column">
                     <div class="field">
-                        <label class="label">Invoice Number</label>
+                        <label class="label">Adresa Client</label>
                         <div class="control">
-                            <input class="input is-small" type="text" value = "{{$invoice->invoiceNo}}" name = "invoiceNo" placeholder="Invoice No" required>
+                            <input class="input is-small" type="text" name = "clientAddress" value = "{{$invoice->clientAddress}}" placeholder="Adresa Client" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Client Address</label>
+                        <label class="label">CNP/CUI Client</label>
                         <div class="control">
-                            <input class="input is-small" type="text" name = "clientAddress" value = "{{$invoice->clientAddress}}" placeholder="Client Address" required>
+                            <input class="input is-small" type="text" name = "clientInfo" value = "{{$invoice->clientInfo}}" placeholder="Info Client" required>
                         </div>
                     </div>
                 </div>
@@ -48,36 +56,36 @@
             <div class="columns">
                 <div class="column">
                     <div class="field">
-                        <label class="label">Reference</label>
+                        <label class="label">Referinta</label>
                         <div class="control">
-                            <input class="input is-small" type="text" value = "{{$invoice->title}}" name = "title" placeholder="Reference" required>
+                            <input class="input is-small" type="text" value = "{{$invoice->title}}" name = "title" placeholder="Referinta" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Invoice Date</label>
+                        <label class="label">Data facturii</label>
                         <div class="control">
-                            <input class="input is-small" type="date" value = "{{$invoice->invoiceDate}}" name = "invoiceDate" placeholder="Invoice Date" required>
+                            <input class="input is-small" type="date" value = "{{$invoice->invoiceDate}}" name = "invoiceDate" placeholder="Data facturii" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Due Date</label>
+                        <label class="label">Data limita de plata</label>
                         <div class="control">
-                            <input class="input is-small" type="date" value = "{{$invoice->dueDate}}" name = "dueDate" placeholder="Due Date" required>
+                            <input class="input is-small" type="date" value = "{{$invoice->dueDate}}" name = "dueDate" placeholder="Data limita de plata" required>
                         </div>
                     </div>
                 </div>
                 <div class="column">
                     <div class="field">
-                        <label class="label">Status</label>
+                        <label class="label">Stare</label>
                         <div class="select is-small" required>
                             <select name = "status">
-                                <option value="unpaid" {{ $invoice->status == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
-                                <option value="paid" {{ $invoice->status == 'paid' ? 'selected' : '' }}>Paid</option>
-                                <option value="cancelled" {{ $invoice->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                <option value="unpaid" {{ $invoice->status == 'unpaid' ? 'selected' : '' }}>Neplatita</option>
+                                <option value="paid" {{ $invoice->status == 'paid' ? 'selected' : '' }}>Platita</option>
+                                <option value="cancelled" {{ $invoice->status == 'cancelled' ? 'selected' : '' }}>Anulata</option>
                             </select>
                         </div>
                     </div>
@@ -87,25 +95,25 @@
                 <div class="columns itemsRow is-vcentered">
                     <div class="column">
                         <div class="field">
-                            <label class="label">Item description</label>
+                            <label class="label">Descriere produs/serviciu</label>
                             <div class="control">
-                                <input class="input is-small" type="text" value = "{{$invoice->invoiceItems->pluck('item')[$i]}}" name = "item[]" placeholder="Item description" required>
+                                <input class="input is-small" type="text" value = "{{$invoice->invoiceItems->pluck('item')[$i]}}" name = "item[]" placeholder="Descriere produs/serviciu" required>
                             </div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="field">
-                            <label class="label">Unit price</label>
+                            <label class="label">Pret unitar</label>
                             <div class="control">
-                                <input class="input is-small" type="number" value = "{{$invoice->invoiceItems->pluck('unitPrice')[$i]}}" name = "unitPrice[]" placeholder="Unit price" min="0" required>
+                                <input class="input is-small" type="number" value = "{{$invoice->invoiceItems->pluck('unitPrice')[$i]}}" name = "unitPrice[]" placeholder="Pret unitar" min="0" required>
                             </div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="field">
-                            <label class="label">Quantity</label>
+                            <label class="label">Cantitate</label>
                             <div class="control">
-                                <input class="input is-small" type="number" value = "{{$invoice->invoiceItems->pluck('qty')[$i]}}" name = "qty[]" placeholder="Quantity" min="1" required>
+                                <input class="input is-small" type="number" value = "{{$invoice->invoiceItems->pluck('qty')[$i]}}" name = "qty[]" placeholder="Cantitate" min="1" required>
                             </div>
                         </div>
                     </div>
@@ -131,7 +139,7 @@
                     <!-- left side -->
                     <div class="field is-pulled-left">
                         <p class="control">
-                            <a id = "addRow" class="button is-primary is-outlined is-small" style="text-decoration: none">Add row</a>
+                            <a id = "addRow" class="button is-primary is-outlined is-small" style="text-decoration: none">Rand nou</a>
                         </p>
                     </div>
                 </div>
@@ -176,12 +184,12 @@
                 <div class="column is-4">
                     <div class="field is-horizontal">
                         <div class="field-label">
-                            <label class="label">Terms and Conditions</label>
+                            <label class="label">Termeni si Conditii</label>
                         </div>
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <textarea class="input is-small" name = "termsAndConditions" placeholder="Terms and conditions">{{$invoice->termsAndConditions}}</textarea>
+                                    <textarea class="input is-small" name = "termsAndConditions" placeholder="Termeni si Conditii">{{$invoice->termsAndConditions}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -208,11 +216,11 @@
             <div class="field is-grouped">
                 <div class="control">
                     {{-- <button class="button is-link">Save</button> --}}
-                    <input type="submit" class="button is-link" value="Save" />
+                    <input type="submit" class="button is-link" value="Salveaza" />
                 </div>
                 <div class="control">
                     {{-- <button class="button is-text">Cancel</button> --}}
-                    <a class="button is-text" href="{{url()->previous()}}" >Cancel</a>
+                    <a class="button is-text" href="{{url()->previous()}}" >Anuleaza</a>
                 </div>
             </div>
             @include ('invoices.errors')

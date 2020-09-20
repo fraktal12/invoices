@@ -15,10 +15,10 @@
     <div class="container ">
         <div class="level is-small">
             <div class="level-left">
-                <div class = "level-item is-pulled-left"> To: {{$invoice->client}}</div>
+                <div class = "level-item is-pulled-left"> CAtre: {{$invoice->client}}</div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Number: {{$invoice->invoiceNo}}</div>
+                <div class = "level-item is-pulled-right">Numar: {{$invoice->invoiceNo}}</div>
             </div>
         </div>
         <div class="level">
@@ -26,7 +26,7 @@
                 <div class = "level-item is-pulled-left">{{$invoice->clientAddress}}</div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Date: {{$invoice->invoiceDate}}</div>
+                <div class = "level-item is-pulled-right">Datea: {{$invoice->invoiceDate}}</div>
             </div>
         </div>
         <div class="level">
@@ -34,15 +34,15 @@
                 <div class = "level-item is-pulled-left"></div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Due Date: {{$invoice->dueDate}}</div>
+                <div class = "level-item is-pulled-right">Data limita: {{$invoice->dueDate}}</div>
             </div>
         </div>
         <div class="level">
             <div class="level-left">
-                <div class = "level-item is-pulled-left">Reference: {{$invoice->title}}</div>
+                <div class = "level-item is-pulled-left">Referinta: {{$invoice->title}}</div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Status: {{$invoice->status}}</div>
+                <div class = "level-item is-pulled-right">Stare: {{$invoice->status}}</div>
             </div>
         </div>
     </div>
@@ -50,9 +50,9 @@
         <table class="table table is-striped is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <th><abbr title="Item name">Item</abbr></th>
-                    <th><abbr title="Quantity">Qty</abbr></th>
-                    <th><abbr title="Item price">Price</th>
+                    <th><abbr title="Item name">Produs</abbr></th>
+                    <th><abbr title="Quantity">Cantitate</abbr></th>
+                    <th><abbr title="Item price">Pret unitar</th>
                     <th class = "has-text-right"><abbr title="Subtotal">Total</abbr></th>
                 </tr>
             </thead>

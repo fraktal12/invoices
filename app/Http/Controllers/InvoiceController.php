@@ -89,6 +89,7 @@ class InvoiceController extends Controller
             'title'=>'nullable|max:100',
             'client'=>'required|max:100',
             'clientAddress'=>'required|max:100',
+            'clientInfo'=>'required|max:100',
             'status'=>'required',
             'subTotal'=>'required',
             'discount'=>'required|numeric|min:0',

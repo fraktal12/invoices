@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 // only authenticated users can access the site
 Route::middleware(['auth'])->group(function () {

@@ -5,17 +5,17 @@
         <div class="columns">
             <div class="column">
                 <h3 class="title">
-                    View invoice - {{$invoice->invoiceNo}}
+                    Vizualizare factura nr - {{$invoice->invoiceNo}}
                 </h3>
             </div>
             <div class="column">
                 <!-- Right side -->
                 <div class="field is-grouped is-pulled-right">
                     <p class="control">
-                        <a class="button is-primary is-outlined" href="{{route('invoices.index')}}" style="text-decoration: none" >Go to Dashboard</a>
+                        <a class="button is-primary is-outlined" href="{{route('invoices.index')}}" style="text-decoration: none" >Inapoi la Dashboard</a>
                     </p>
                     <p class="control">
-                        <a class="button is-link is-outlined" href="{{$invoice->id}}/edit" style="text-decoration: none">Edit</a>
+                        <a class="button is-link is-outlined" href="{{$invoice->id}}/edit" style="text-decoration: none">Editeaza</a>
                     </p>
                     <p class="control">
                         <a class="button is-info is-outlined" href="{{$invoice->id}}/pdf" style="text-decoration: none">PDF</a>
@@ -24,7 +24,7 @@
                         @csrf
                         @method('DELETE')
                         <div class="control">
-                            <button  class="button is-danger is-outlined">Delete</button>
+                            <button  class="button is-danger is-outlined">Sterge</button>
                         </div>
                     </form>
                 </div>
@@ -35,10 +35,10 @@
     <div class="container ">
         <div class="level is-small">
             <div class="level-left">
-                <div class = "level-item is-pulled-left"> To: {{$invoice->client}}</div>
+                <div class = "level-item is-pulled-left"> Catre: {{$invoice->client}}</div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Number: {{$invoice->invoiceNo}}</div>
+                <div class = "level-item is-pulled-right">Numar: {{$invoice->invoiceNo}}</div>
             </div>
         </div>
         <div class="level">
@@ -46,33 +46,34 @@
                 <div class = "level-item is-pulled-left">{{$invoice->clientAddress}}</div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Date: {{$invoice->invoiceDate}}</div>
+                <div class = "level-item is-pulled-right">Data: {{$invoice->invoiceDate}}</div>
             </div>
         </div>
         <div class="level">
             <div class="level-left">
-                <div class = "level-item is-pulled-left"></div>
+                <div class = "level-item is-pulled-left">CNP/CUI: {{$invoice->clientInfo}}</div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Due Date: {{$invoice->dueDate}}</div>
+                <div class = "level-item is-pulled-right">Data limita: {{$invoice->dueDate}}</div>
             </div>
         </div>
         <div class="level">
             <div class="level-left">
-                <div class = "level-item is-pulled-left">Reference: {{$invoice->title}}</div>
+                <div class = "level-item is-pulled-left">Referinta: {{$invoice->title}}</div>
             </div>
             <div class="level-right ">
-                <div class = "level-item is-pulled-right">Status: {{$invoice->status}}</div>
+                <div class = "level-item is-pulled-right">Stare: {{$invoice->status}}</div>
             </div>
         </div>
     </div>
+    <br>
     <div class="container">
         <table class="table table is-striped is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <th><abbr title="Item name">Item</abbr></th>
-                    <th><abbr title="Quantity">Qty</abbr></th>
-                    <th><abbr title="Item price">Price</th>
+                    <th><abbr title="Item name">Produs</abbr></th>
+                    <th><abbr title="Quantity">Cantitate</abbr></th>
+                    <th><abbr title="Item price">Pret unitar</th>
                     <th class = "has-text-right"><abbr title="Subtotal">Total</abbr></th>
                 </tr>
             </thead>
