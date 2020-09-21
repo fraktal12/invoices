@@ -11,7 +11,7 @@
             <div class="column">
                 <!-- Right side -->
                 <div class="level-right">
-                    <p class="level-item"><a href="{{route('invoices.index')}}" style="text-decoration: none" class="button is-link is-outlined">Go to Dashboard</a></p>
+                    <p class="level-item"><a href="{{route('invoices.index')}}" style="text-decoration: none" class="button is-link is-outlined">Inapoi la Dashboard</a></p>
                 </div>
             </div>
         </div>
@@ -179,7 +179,7 @@
                         <div class="field-body">
                             <div class="field">
                                 <div class="control">
-                                    <textarea class="input is-small" name = "termsAndConditions" placeholder="Termeni si Conditii"></textarea>
+                                    <textarea class="input is-small" name = "termsAndConditions" rows="4" placeholder="Termeni si Conditii"></textarea>
                                 </div>
                             </div>
                         </div>

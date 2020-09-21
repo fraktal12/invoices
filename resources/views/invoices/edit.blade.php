@@ -12,7 +12,7 @@
             <div class="column">
                 <!-- Right side -->
                 <div class="level-right">
-                    <a class="button" href="{{url()->previous()}}" style="text-decoration: none">Back</a>
+                    <a class="button" href="{{url()->previous()}}" style="text-decoration: none">Inapoi</a>
                 </div>
             </div>
         </div>
