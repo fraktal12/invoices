@@ -6,7 +6,7 @@
         <div class="columns">
             <div class="column">
                 <h2 class="title">
-                        Facturi Bellatrix Media SRL
+                        Sumar facturi - Bellatrix Media SRL
                 </h2>
             </div>
             <div class="column">
@@ -22,7 +22,7 @@
                     <th>Referinta</th>
                     <th>Client</th>
                     <th>Stare</th>
-                    <th>Due</th>
+                    <th>Data facturii</th>
                     <th>Total</th>
                     <th>Actiune</th>
                 </tr>
@@ -42,10 +42,10 @@
                             {{$invoice->status}}
                         </td>
                         <td>
-                            {{$invoice->dueDate}}
+                            {{$invoice->invoiceDate}}
                         </td>
                         <td>
-                            {{$invoice->grandTotal}}
+                            {{$invoice->grandTotal}} RON
                         </td>
                         <td>
                             <a href="{{route('invoices.show',[$invoice->id])}}" style="text-decoration: none" class="button is-small is-link is-outlined">Vizualizeaza</a>

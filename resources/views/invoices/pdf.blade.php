@@ -112,8 +112,8 @@
 
             <div class="row">
                 <div class="col-xs-8 invbody-terms">
-                    Multumim pentru afacerea dumneavoastra! <br>
-                    <br>
+                    Multumim pentru colaborare! 
+                    <br><br>
                     <h4>Termeni si conditii</h4>
                     <p>{{$invoice->termsAndConditions}}</p>
                 </div>

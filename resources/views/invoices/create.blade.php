@@ -56,7 +56,7 @@
                     <div class="field">
                         <label class="label">Referinta</label>
                         <div class="control">
-                            <input class="input is-small" type="text" value = "{{old('title')}}" name = "title" placeholder="Referinta" required>
+                            <input class="input is-small" type="text" value = "Servicii foto" name = "title" placeholder="Referinta">
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                     <div class="field">
                         <label class="label">Descriere produs/serviciu</label>
                         <div class="control">
-                            <input class="input is-small" type="text" value = "{{old('item')}}" name = "item[]" placeholder="Descriere produs/serviciu" required>
+                            <input class="input is-small" type="text" value = "Servicii foto" name = "item[]" placeholder="Descriere produs/serviciu" required>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                     <div class="field">
                         <label class="label">Cantitate</label>
                         <div class="control">
-                            <input class="input is-small" type="number" value = "{{old('qty')}}" name = "qty[]" placeholder="Cantitate" min="1" required>
+                            <input class="input is-small" type="number" value = "1" name = "qty[]" placeholder="Cantitate" min="1" required>
                         </div>
                     </div>
                 </div>
