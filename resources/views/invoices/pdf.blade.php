@@ -24,8 +24,9 @@
             <div class="col-xs-7">
                 <h4>Vanzator:</h4>
                 <strong>Bellatrix Media SRL</strong><br>
-                Aleea Fuiorului 4 <br>
-                Bucuresti Romania - 032173<br>
+                Nr. registru: J40/7768/2018<br>
+                Contul : RO52INGB0000999908008101<br>
+                 Aleea Fuiorului 4 Bucuresti Romania - 032173<br>
                 T: +40723239457 <br>
                 E: stefi.radulescu@gmail.com <br><br>
             </div>

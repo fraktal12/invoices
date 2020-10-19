@@ -19,7 +19,7 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Referinta</th>
+                    <th>Factura</th>
                     <th>Client</th>
                     <th>Stare</th>
                     <th>Data facturii</th>
@@ -32,7 +32,7 @@
                     <tr>
                         <td>
                             <a href="{{route('invoices.show',[$invoice->id])}}">
-                                {{$invoice->title}}
+                                {{$invoice->invoiceNo}}
                             </a>
                         </td>
                         <td>
