@@ -223,8 +223,6 @@ class InvoiceController extends Controller
 
     public function printPDF(Invoice $invoice)
     {
-        //dd($invoice);
-        //$pdf = \PDF::loadView('invoices.pdf', compact('invoice'))->save('pdf/specification.pdf');
         $pdf = \PDF::loadView('invoices.pdf', compact('invoice'));
         return $pdf->download('Factura_nr'.$invoice->invoiceNo.'_'.$invoice->client.'.pdf');
 
