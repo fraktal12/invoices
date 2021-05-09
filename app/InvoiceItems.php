@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceItems extends Model
 {
-    protected $fillable = ['invoice_id', 'item', 'unitPrice', 'qty'];
+    protected $fillable = ['invoice_id', 'item', 'qty', 'unitPrice'];
     //protected $guarded = [];
     //public $timestamps = true;
     /**
